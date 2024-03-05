@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Augoor - Input commands</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #20222f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+#wrapper {
+    position: relative;
+    align-items: center;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 0px 8px 0px 8px;
+    background-color: #20222f;
+    width: 350px;
+    height: 40px;
+}
+  #commandInput {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    margin-top: 10px;
+    width: 100%;
+    letter-spacing: 0.01rem;
+    font-weight: 100;
+}
+#suggestion {
+    visibility: hidden;
+    color: #999EAD;
+    pointer-events: none;
+    position: absolute;
+    top: 10px;
+    left: 36px;
+    font-size: 16px;
+}
+#tabButton {
+    display: none;
+    color: #009D9A;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 7px 12px 6px;
+    top: 5px;
+    position: absolute;
+    left: 96px;
+    background: none;
+    border: 1px solid #009D9A;
+    font-size: 12px;
+}
+#styledExplain {
+    color: #777;
+    position: absolute;
+    background: #484E61;
+    padding: 5px 12px;
+    border-radius: 10px;
+    left: 8px;
+    top: 8px;
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: 0.03rem;
+}
+#options {
+    display: none;
+    height: 108px;
+    border: 1px solid #5B637B;
+    background-color: #2C313F;
+    position: absolute;
+    top: -135px;
+    width: 349px;
+    left: 0px;
+    border-radius: 4px;
+    padding: 8px;
+}
+#options ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+} 
+#options ul li {
+    padding: 2px 5px 2px 32px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    letter-spacing: 0.4 rem;
+    font-weight: 400;
+    margin-top: 6px;
+    line-height: 24px;
+    color: #fff;
+}
+#options ul li:hover {
+    background-color: #5B637B;
+    border-radius: 4px;
+}
+.option1{
+    background-image: url(i/option1.png);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position-y: center;
+    background-position-x: 6px;
+}
+.option2{
+    background-image: url(i/option2.png);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position-y: center;
+    background-position-x: 6px;
+}
+.option3{
+    background-image: url(i/option3.png);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position-y: center;
+    background-position-x: 6px;
+}
+.option1-hover-style {
+    background-color: #5B637B;
+    border-radius: 4px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+  <div id="wrapper">
+    <input id="commandInput" type="text" placeholder="Message or type '/' for commands" />
+    <div id="options">
+        <ul>
+          <li  class="option1">Explain code</li>
+          <li  class="option2">Refactor code (No funciona)</li>
+          <li  class="option3">Identify code smells (No funciona)</li>
+        </ul>
+      </div>
+    <div id="suggestion">Explain</div>
+    <button id="tabButton">Tab</button>
+  </div>
+
+<script>
+
+const wrapper = document.getElementById('wrapper');
+const input = document.getElementById('commandInput');
+const suggestion = document.getElementById('suggestion');
+const tabButton = document.getElementById('tabButton');
+const options = document.getElementById('options');
+const option1 = document.querySelector('.option1');
+
+
+  
+function updateInputStyle() {
+    if (input.value === 'Explain') {
+        input.classList.add('border-red');
+    } else {
+        input.classList.remove('border-red');
+    }
+}
+
+input.addEventListener('input', function() {
+    if (input.value === "/") {
+        options.style.display = 'block';
+    } else {
+        options.style.display = 'none';
+    }
+});
+  
+input.addEventListener('input', function(e) {
+    const val = input.value.toLowerCase();
+    if (val === "/e") {
+        suggestion.style.visibility = 'visible';
+        tabButton.style.display = 'inline-block';
+        options.style.display = 'block';
+        option1.classList.add('option1-hover-style');
+    } else {
+        suggestion.style.visibility = 'hidden';
+        tabButton.style.display = 'none';
+        option1.classList.remove('option1-hover-style');
+    }
+    updateInputStyle();
+});
+  
+input.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab' && suggestion.style.visibility === 'visible') {
+        e.preventDefault();
+        options.style.display = 'none'; 
+        const explainDiv = document.createElement('div');
+        explainDiv.textContent = 'Explain';
+        explainDiv.id = 'styledExplain'; 
+        wrapper.appendChild(explainDiv);
+        input.style.marginLeft = '75px';
+        input.placeholder = '';
+        suggestion.style.visibility = 'hidden';
+        tabButton.style.display = 'none';
+        animateText('The following code ...');
+    }
+    updateInputStyle();
+});
+
+function animateText(text, interval = 100) {
+    let index = 0;
+    input.value = '';
+    const writeText = () => {
+        if (index < text.length) {
+            input.value += text.charAt(index);
+            index++;
+            setTimeout(writeText, interval);
+        }
+    };
+    writeText();
+}
+
+tabButton.onclick = function() {
+    const explainDiv = document.createElement('div');
+    explainDiv.textContent = 'Explain';
+    explainDiv.id = 'styledExplain';
+    wrapper.appendChild(explainDiv);
+    input.style.marginLeft = '75px';
+    input.placeholder = '';
+    suggestion.style.visibility = 'hidden';
+    tabButton.style.display = 'none';
+    input.focus();
+    updateInputStyle();
+};
+  
+input.addEventListener('keydown', function(e) {
+    if (e.key === 'Backspace') {
+        setTimeout(() => {
+            if (input.value === '') {
+                const styledExplain = document.getElementById('styledExplain');
+                if (styledExplain) {
+                    styledExplain.parentNode.removeChild(styledExplain);
+                    input.style.marginLeft = '0px';
+                }
+                input.placeholder = "Message or type '/' for commands";
+            }
+        }, 0);
+    }
+});
+
+window.addEventListener('resize', function() {
+    if (suggestion.style.visibility === 'visible') {
+        tabButton.style.display = 'inline-block';
+    }
+});
+
+input.addEventListener('focus', function() {
+    wrapper.style.borderColor = 'aqua';
+});
+
+input.addEventListener('blur', function() {
+    wrapper.style.borderColor = '#555';
+});
+
+option1.addEventListener('click', function() {
+    options.style.display = 'none';
+    tabButton.onclick();
+    input.value='';
+});
+
+ </script>
+  
+  
+</body>
+</html>
