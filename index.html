@@ -21,7 +21,7 @@ body {
     border: 1px solid #555;
     border-radius: 8px;
     padding: 0px 8px 0px 8px;
-    background-color: #20222f;
+    background-color: #181A1F;
     width: 350px;
     height: 40px;
 }
@@ -131,6 +131,18 @@ body {
     border-radius: 4px;
 }
 
+.sendButton {
+    background-image: url(i/send.png);
+    border: none;
+    color: transparent;
+    position: absolute;
+    right: -5px;
+    top: 5px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    padding: 8px;
+}
 </style>
 
 </head>
@@ -148,6 +160,7 @@ body {
       </div>
     <div id="suggestion">Explain</div>
     <button id="tabButton">Tab</button>
+    <button class="sendButton">Send</button>
   </div>
 
 <script>
@@ -257,7 +270,7 @@ window.addEventListener('resize', function() {
 });
 
 input.addEventListener('focus', function() {
-    wrapper.style.borderColor = 'aqua';
+    wrapper.style.borderColor = '#3DDBD9';
 });
 
 input.addEventListener('blur', function() {
