@@ -31,7 +31,7 @@ body {
     color: white;
     font-size: 16px;
     outline: none;
-    margin-top: 10px;
+    margin-top: 9px;
     width: 100%;
     letter-spacing: 0.01rem;
     font-weight: 100;
@@ -48,10 +48,10 @@ body {
 #tabButton {
     display: none;
     color: #009D9A;
-    border-radius: 4px;
+    border-radius: 100px;
     cursor: pointer;
-    padding: 7px 12px 6px;
-    top: 5px;
+    padding: 3px 17px 3px;
+    top: 8px;
     position: absolute;
     left: 96px;
     background: none;
@@ -59,14 +59,13 @@ body {
     font-size: 12px;
 }
 #styledExplain {
-    color: #777;
     position: absolute;
-    background: #484E61;
+    background: #004144;
     padding: 5px 12px;
     border-radius: 25px;
     left: 8px;
-    top: 8px;
-    color: #fff;
+    top: 6px;
+    color: #3DDBD9;
     font-size: 14px;
     letter-spacing: 0.03rem;
 }
@@ -132,16 +131,16 @@ body {
 }
 
 .sendButton {
-    background-image: url(i/send.png);
     border: none;
     color: transparent;
     position: absolute;
-    right: -5px;
-    top: 5px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-color: transparent;
-    padding: 8px;
+    right: 2px;
+    top: 7px;
+    background: none;
+}
+
+ul li span {
+    color: #999EAD;
 }
 </style>
 
@@ -153,14 +152,23 @@ body {
     <input id="commandInput" type="text" placeholder="Message or type '/' for commands" />
     <div id="options">
         <ul>
-          <li  class="option1">Explain code</li>
-          <li  class="option2">Refactor code (No funciona)</li>
-          <li  class="option3">Identify code smells (No funciona)</li>
+          <li  class="option1">/explain <span>(Explain code)</span></li>
+          <li  class="option2">/refactor <span>(Refactor code)</span></li>
+          <li  class="option3">/codesmells <span>(Identify code smells)</span></li>
         </ul>
       </div>
-    <div id="suggestion">Explain</div>
+    <div id="suggestion">explain</div>
     <button id="tabButton">Tab</button>
-    <button class="sendButton">Send</button>
+    <button class="sendButton">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="24" viewBox="0 0 20 24" fill="transparent">
+            <mask id="mask0_1815_63709" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="24">
+              <rect width="20" height="24" fill="#D9D9D9"/>
+            </mask>
+            <g mask="url(#mask0_1815_63709)">
+              <path d="M2.5 20V14L9.16667 12L2.5 10V4L18.3333 12L2.5 20Z" fill="#484E61"/>
+            </g>
+          </svg>
+    </button>
   </div>
 
 <script>
@@ -175,7 +183,7 @@ const option1 = document.querySelector('.option1');
 
   
 function updateInputStyle() {
-    if (input.value === 'Explain') {
+    if (input.value === 'explain') {
         input.classList.add('border-red');
     } else {
         input.classList.remove('border-red');
@@ -210,17 +218,22 @@ input.addEventListener('keydown', function(e) {
         e.preventDefault();
         options.style.display = 'none'; 
         const explainDiv = document.createElement('div');
-        explainDiv.textContent = 'Explain';
+        explainDiv.textContent = '/explain';
         explainDiv.id = 'styledExplain'; 
         wrapper.appendChild(explainDiv);
-        input.style.marginLeft = '75px';
+        input.style.marginLeft = '80px';
         input.placeholder = '';
         suggestion.style.visibility = 'hidden';
         tabButton.style.display = 'none';
         animateText('The following code ...');
+        
+        // Aquí agregas el código para cambiar el color del SVG
+        const svgPath = document.querySelector('svg path');
+        if(svgPath) svgPath.setAttribute('fill', '#ffffff');
     }
     updateInputStyle();
 });
+
 
 function animateText(text, interval = 100) {
     let index = 0;
@@ -237,10 +250,10 @@ function animateText(text, interval = 100) {
 
 tabButton.onclick = function() {
     const explainDiv = document.createElement('div');
-    explainDiv.textContent = 'Explain';
+    explainDiv.textContent = '/explain';
     explainDiv.id = 'styledExplain';
     wrapper.appendChild(explainDiv);
-    input.style.marginLeft = '75px';
+    input.style.marginLeft = '81px';
     input.placeholder = '';
     suggestion.style.visibility = 'hidden';
     tabButton.style.display = 'none';
