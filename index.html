@@ -158,7 +158,7 @@ ul li span {
         </ul>
       </div>
     <div id="suggestion">explain</div>
-    <button id="tabButton">Tab</button>
+    <button id="tabButton">Enter</button>
     <button class="sendButton">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="24" viewBox="0 0 20 24" fill="transparent">
             <mask id="mask0_1815_63709" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="24">
@@ -214,7 +214,7 @@ input.addEventListener('input', function(e) {
 });
   
 input.addEventListener('keydown', function(e) {
-    if (e.key === 'Tab' && suggestion.style.visibility === 'visible') {
+    if (e.key === 'Enter' && suggestion.style.visibility === 'visible') {
         e.preventDefault();
         options.style.display = 'none'; 
         const explainDiv = document.createElement('div');
@@ -227,7 +227,7 @@ input.addEventListener('keydown', function(e) {
         tabButton.style.display = 'none';
         animateText('The following code ...');
         
-        // Aquí agregas el código para cambiar el color del SVG
+        
         const svgPath = document.querySelector('svg path');
         if(svgPath) svgPath.setAttribute('fill', '#ffffff');
     }
