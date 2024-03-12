@@ -164,7 +164,7 @@ ul li span {
               <rect width="20" height="24" fill="#D9D9D9"/>
             </mask>
             <g mask="url(#mask0_1815_63709)">
-              <path d="M2.5 20V14L9.16667 12L2.5 10V4L18.3333 12L2.5 20Z" fill="#484E61"/>
+              <path id="sendButtonIcon" d="M2.5 20V14L9.16667 12L2.5 10V4L18.3333 12L2.5 20Z" fill="#484E61"/>
             </g>
           </svg>
     </button>
@@ -267,6 +267,9 @@ input.addEventListener('keydown', function(e) {
             wrapper.removeChild(styledExplain);
             input.style.marginLeft = '0px'; 
             input.placeholder = "Message or type '/' for commands";
+
+            const svgPath = document.querySelector('svg path');
+            if(svgPath) svgPath.setAttribute('fill', '#484E61');
         }
     }
 });
@@ -287,10 +290,22 @@ input.addEventListener('blur', function() {
 
 option1.addEventListener('click', function() {
     options.style.display = 'none';
-    tabButton.onclick();
-    input.value='';
-});
 
+    input.value = '';
+    const styledExplain = document.getElementById('styledExplain');
+    if (!styledExplain) {
+        const explainDiv = document.createElement('div');
+        explainDiv.textContent = '/explain';
+        explainDiv.id = 'styledExplain';
+        wrapper.appendChild(explainDiv);
+        input.style.marginLeft = '80px';
+    }
+    input.placeholder = '';
+    suggestion.style.visibility = 'hidden';
+    tabButton.style.display = 'none';
+
+    input.focus();
+});
 
 // Navehación por teclado
 
@@ -334,7 +349,6 @@ input.addEventListener('input', function() {
         clearSelection();
     }
 });
-
 
  </script>
   
