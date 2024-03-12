@@ -262,17 +262,13 @@ tabButton.onclick = function() {
 };
   
 input.addEventListener('keydown', function(e) {
-    if (e.key === 'Backspace') {
-        setTimeout(() => {
-            if (input.value === '') {
-                const styledExplain = document.getElementById('styledExplain');
-                if (styledExplain) {
-                    styledExplain.parentNode.removeChild(styledExplain);
-                    input.style.marginLeft = '0px';
-                }
-                input.placeholder = "Message or type '/' for commands";
-            }
-        }, 0);
+    if (e.key === 'Backspace' && input.value === '') {
+        const styledExplain = document.getElementById('styledExplain');
+        if (styledExplain) {
+            wrapper.removeChild(styledExplain);
+            input.style.marginLeft = '0px'; 
+            input.placeholder = "Message or type '/' for commands";
+        }
     }
 });
 
@@ -295,6 +291,51 @@ option1.addEventListener('click', function() {
     tabButton.onclick();
     input.value='';
 });
+
+
+// Navehación por teclado
+
+let currentIndex = -1;
+
+function clearSelection() {
+    const options = document.querySelectorAll('#options ul li');
+    options.forEach(option => {
+        option.classList.remove('option1-hover-style');
+    });
+}
+
+function updateSelection(index) {
+    clearSelection();
+    const options = document.querySelectorAll('#options ul li');
+    if (index >= 0 && index < options.length) {
+        options[index].classList.add('option1-hover-style');
+        options[index].scrollIntoView({ block: "nearest" });
+    }
+}
+
+input.addEventListener('keydown', function(e) {
+    const options = document.querySelectorAll('#options ul li');
+    if (e.key === 'ArrowDown') {
+        e.preventDefault(); 
+        currentIndex = (currentIndex + 1) % options.length;
+        updateSelection(currentIndex);
+    } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        currentIndex = (currentIndex - 1 + options.length) % options.length;
+        updateSelection(currentIndex);
+    } else if (e.key === 'Enter' && currentIndex !== -1) {
+        e.preventDefault();
+        options[currentIndex].click();
+    }
+});
+
+input.addEventListener('input', function() {
+    if (input.value !== "/") {
+        currentIndex = -1;
+        clearSelection();
+    }
+});
+
 
  </script>
   
