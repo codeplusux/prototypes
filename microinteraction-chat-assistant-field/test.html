@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Textarea con Altura Dinámica</title>
+<style>
+
+</style>
+</head>
+<body>
+
+  <textarea id="autoresizing" rows="1"></textarea>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+  const textarea = document.getElementById('autoresizing');
+  textarea.addEventListener('input', autoResize, false);
+
+  function autoResize() {
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px';
+  }
+});
+
+
+  </script>
+</body>
+</html>

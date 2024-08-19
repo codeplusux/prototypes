@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Augoor Microinteraction Search Field</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #search {
+            background: url(bg.png) -2px top no-repeat;
+            width: 900px;
+            height: 550px;
+            background-size: 190%;
+            border-radius: 20px;
+            box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.7);
+            border: 1px solid #fff;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: #1C1E22;
+            border: 2px solid #3A3D44;
+            border-radius: 10px;
+            padding: 9px;
+            width: 700px;
+            transition: all 0.3s ease;
+            margin-top: 104px;
+            margin-left: 126px;
+        }
+
+        .search-container input {
+            background-color: transparent;
+            border: none;
+            color: #B0B3B8;
+            font-size: 19px;
+            flex-grow: 1;
+            outline: none;
+        }
+
+        .search-container button {
+            background: none;
+            border: none;
+            color: #3A3D44;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .search-container:focus-within {
+            border-color: white;
+        }
+
+        .search-container input:focus {
+            color: #B0B3B8;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-container.has-value {
+            border-color: #fff;
+            position: relative;
+        }
+
+        .search-container.has-value input {
+            color: #fff;
+        }
+
+        .search-container.has-value button.clear {
+            color: #fff;
+            margin-right: 54px;
+        }
+
+        .search-container button.search {
+            background-color: transparent;
+            color: white;
+            border-radius: 0px 8px 8px 0px;
+            padding: 0 10px;
+            height: 40px;
+            position: absolute;
+            right: 0px;
+            width: 53px;
+        }
+
+
+        .search-container.has-value button.search {
+            background-color: #007AFF;
+            color: white;
+            border-radius: 0px 8px 8px 0px;
+            padding: 0 10px;
+            height: 40px;
+            position: absolute;
+            right: 0px;
+            width: 53px;
+        }
+
+        .search-container.has-value button.search .send-icon path  {
+            fill: white;
+        }
+
+        .search-container input::placeholder {
+            letter-spacing: 0.5px; 
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+    <div id="search">
+        <div class="search-container" id="searchContainer">
+            <input type="text" id="searchInput" placeholder="">
+            <button class="clear" id="clearBtn" style="display: none;">&#x2715;</button>
+            <button class="search">
+                <svg class="send-icon" width="23" height="19" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.365723 11.0011V7.00114L5.69906 5.66781L0.365723 4.33447V0.334473L13.0324 5.66781L0.365723 11.0011Z" fill="#484E61"/>
+                </svg>
+            </button>
+        </div>
+    
+        <script>
+            const searchInput = document.getElementById('searchInput');
+            const searchContainer = document.getElementById('searchContainer');
+            const clearBtn = document.getElementById('clearBtn');
+            const words = ["functions", "symbols", "documentation", "all in your code base"];
+            let wordIndex = 0;
+            let charIndex = 0;
+            let currentWord = "Search " + words[wordIndex];
+            let typingSpeed = 100; // Velocidad de la microinteraccion
+            let isTyping = false;
+            let animationTimeout;
+
+            function typePlaceholder() {
+                if (isTyping || searchInput === document.activeElement || searchInput.value) return;
+
+                if (charIndex < currentWord.length) {
+                    searchInput.placeholder += currentWord[charIndex];
+                    charIndex++;
+                    animationTimeout = setTimeout(typePlaceholder, typingSpeed);
+                } else {
+                    animationTimeout = setTimeout(erasePlaceholder, 2000); // Pausa antes de borrar
+                }
+            }
+
+            function erasePlaceholder() {
+                if (isTyping || searchInput === document.activeElement || searchInput.value) return;
+
+                if (charIndex > 0) {
+                    searchInput.placeholder = searchInput.placeholder.slice(0, -1);
+                    charIndex--;
+                    animationTimeout = setTimeout(erasePlaceholder, typingSpeed);
+                } else {
+                    wordIndex = (wordIndex + 1) % words.length; // Cambia a la siguiente palabra
+                    currentWord = "Search " + words[wordIndex];
+                    animationTimeout = setTimeout(typePlaceholder, 500); // Pausa antes de empezar a escribir la siguiente palabra
+                }
+            }
+
+            // Inicia la animación
+            typePlaceholder();
+
+            searchInput.addEventListener('input', () => {
+                if (searchInput.value) {
+                    searchContainer.classList.add('has-value');
+                    clearBtn.style.display = 'inline-block';
+                    isTyping = true;
+                } else {
+                    searchContainer.classList.remove('has-value');
+                    clearBtn.style.display = 'none';
+                    isTyping = false;
+                }
+            });
+
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                searchInput.focus();
+                searchContainer.classList.remove('has-value');
+                clearBtn.style.display = 'none';
+                isTyping = false;
+                charIndex = 0;
+                typePlaceholder(); // Reinicia la animación si el campo está vacío
+            });
+
+            searchInput.addEventListener('focus', () => {
+                isTyping = true;
+                clearTimeout(animationTimeout); // Detiene la animación cuando se hace foco
+                searchInput.placeholder = ""; // Limpia el placeholder
+            });
+
+            searchInput.addEventListener('blur', () => {
+                isTyping = false;
+                if (!searchInput.value) {
+                    charIndex = 0;
+                    typePlaceholder(); // Reinicia la animación si el campo está vacío
+                }
+            });
+        </script>
+    </div>
+
+</body>
+</html>
