@@ -192,11 +192,13 @@
                     searchContainer.classList.add('has-value');
                     searchContainer.classList.remove('no-value');
                     clearBtn.style.display = 'inline-block';
+                    searchBtn.style.backgroundColor = '#007AFF'; // Cambia el color cuando hay valor
                     isTyping = true;
                 } else {
                     searchContainer.classList.remove('has-value');
                     searchContainer.classList.add('no-value');
                     clearBtn.style.display = 'none';
+                    searchBtn.style.backgroundColor = 'transparent'; // Restaura el color transparente cuando no hay valor
                     isTyping = false;
                 }
             });
@@ -207,6 +209,7 @@
                 searchContainer.classList.remove('has-value');
                 searchContainer.classList.add('no-value');
                 clearBtn.style.display = 'none';
+                searchBtn.style.backgroundColor = 'transparent'; // Restaura el color transparente al borrar
                 isTyping = false;
                 charIndex = 0;
                 typePlaceholder(); // Reinicia la animación si el campo está vacío
@@ -221,6 +224,7 @@
                     searchBtn.style.backgroundColor = 'transparent'; // Restablece el color si no hay valor
                 }
             });
+
 
             searchInput.addEventListener('focus', () => {
                 isTyping = true;
