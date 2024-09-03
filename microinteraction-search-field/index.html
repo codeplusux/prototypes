@@ -162,7 +162,7 @@
                 if (isTyping || searchInput === document.activeElement || searchInput.value) return;
 
                 if (charIndex < currentWord.length) {
-                    searchInput.placeholder = "Search " + currentWord.slice(0, charIndex + 1);
+                    searchInput.placeholder = "Search by " + currentWord.slice(0, charIndex + 1);
                     charIndex++;
                     animationTimeout = setTimeout(typePlaceholder, typingSpeed);
                 } else {
@@ -174,7 +174,7 @@
                 if (isTyping || searchInput === document.activeElement || searchInput.value) return;
 
                 if (charIndex > 0) {
-                    searchInput.placeholder = "Search " + currentWord.slice(0, charIndex - 1);
+                    searchInput.placeholder = "Search by " + currentWord.slice(0, charIndex - 1);
                     charIndex--;
                     animationTimeout = setTimeout(erasePlaceholder, typingSpeed);
                 } else {
@@ -225,7 +225,7 @@
             searchInput.addEventListener('focus', () => {
                 isTyping = true;
                 clearTimeout(animationTimeout); // Detiene la animación cuando se hace foco
-                searchInput.placeholder = "Search "; // Mantén la palabra "Search" fija
+                searchInput.placeholder = " "; // Mantén la palabra "Search" fija
             });
 
             searchInput.addEventListener('blur', () => {
